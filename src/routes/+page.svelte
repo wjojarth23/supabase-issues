@@ -8,22 +8,9 @@ let email: string = '';
 async function fetchUserProfile(userId: string) {
     console.log("Fetching user profile for userId:", userId);
   const { data, error } = await supabase
-    .from('user_profiles')
-    .select('*')
-    .eq('id', userId)
-    .single();
+    .from('parts')
+    .select('*');
 console.log("Fetched user profile data:", data, "Error:", error);
-  if (data) {
-    data.permissions = Array.isArray(data.permissions)
-      ? data.permissions
-      : typeof data.permissions === 'string'
-        ? JSON.parse(data.permissions.replace(/([A-Z_]+)/g, '"$1"').replace(/\"/g, '"'))
-        : [];
-    data.banned = data.banned === true || data.banned === 'true';
-    userProfile.set(data as UserProfile);
-  } else {
-    userProfile.set(null);
-  }
 }
 
 async function signInWithEmail() {
